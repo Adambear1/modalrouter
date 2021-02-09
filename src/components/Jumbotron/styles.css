@@ -1,0 +1,14 @@
+.cart-checkout{
+    padding-left: 9px;
+    padding-right: 9px;
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    border-radius: 9px;
+    font-size: 12px;
+    background: white;
+    color: black;
+    padding: 0 5px;
+    vertical-align: top;
+    margin-left: -10px; 
+    font-weight: 300;
+}
