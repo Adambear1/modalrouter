@@ -1,61 +1,73 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect } from "react";
+import "./styles.css";
 import { useSelector, useDispatch } from "react-redux";
+import uuid from "react-uuid";
 import api from "../api/index";
 //
 import Card from "./Card";
+import Jumbotron from "./Jumbotron";
 function Home() {
-  const [displayedItems, setDisplayedItems] = useState(false);
-  const [collection, setCollection] = useState(false);
+  const [displayedItems, setDisplayedItems] = useState([]);
   const dispatch = useDispatch();
   const store = useSelector((data) => {
     return data;
   });
   // ESLINT-IGNORE-NEXT-LINE
-  useMemo(async () => {
-    //   Set Init Data
-    var arr = new Array();
-    api.BooksDB.GetAll().then(({ data }) => {
-      data.items.map(({ volumeInfo, saleInfo }) => {
-        const { imageLinks, description, title } = volumeInfo;
-        const price = (Math.random() * 35 + 6).toFixed(2);
-        var obj = new Object();
-        obj["title"] = title;
-        obj["description"] = description;
-        obj["image"] = imageLinks.thumbnail;
-        obj["price"] = price;
-        arr.push(obj);
+  useEffect(async () => {
+    if (displayedItems.length > 1) {
+      return;
+    } else {
+      var arr = [];
+      var books = await api.BooksDB.GetAll().then(({ data }) => {
+        data.items.map(({ volumeInfo, saleInfo }) => {
+          const { imageLinks, description, title } = volumeInfo;
+          const price = (Math.random() * 35 + 6).toFixed(2);
+          var obj = {};
+          obj["title"] = title;
+          obj["description"] = description;
+          obj["image"] = imageLinks.thumbnail;
+          obj["price"] = price;
+          arr.push(obj);
+        });
       });
-      var items = api.WatchesDB.GetAll();
-      items.map((item) => {
+      var watches = await api.WatchesDB.GetAll().map((item) => {
         arr.push(item);
       });
-    });
-    console.log(arr);
-    dispatch({ type: "SET_DISPLAYED_ITEMS", payload: arr });
-    console.log(store)
-    setDisplayedItems(store["displayedItems"]);
-    setCollection(store["collection"]);
+      setDisplayedItems(arr);
+      return dispatch({ type: "SET_DISPLAYED_ITEMS", payload: arr });
+    }
   }, []);
 
   return (
-    <>
-      {console.log(displayedItems)}
-      {displayedItems &&
-        displayedItems.map((item) => (
-            
-          <>
-            <Card
-              key={item.image}
-              description={item.description || "Mollit consequat pariatur tempor eiusmod nisi in eiusmod velit velit exercitation quis ea officia exercitation."}
-              title={item.title || item.brand}
-              image={item.image}
-              label_1={item.title ? "Book Completed?" : "Is Newly Acquired?"}
-            //   label_2={item.title ? "Is Novel?" : "Is Collectable?"}
-            //   onChange={(e) => console.log(e.target)}
-            />
-          </>
-        ))}
-      
+      <>
+      <Jumbotron/>
+    <div className="container">
+      <div className="row">
+      <div className="masonry">
+        {displayedItems.length > 1 &&
+          displayedItems.map((item) => (
+
+              <div className="col-6 col-sm-4 col-lg-3">
+                <Card
+                  key={uuid()}
+                  description={
+                    item.description ||
+                    "Labore aute veniam laborum et dolore id cupidatat elit veniam."
+                  }
+                  title={item.title || item.brand}
+                  image={item.image}
+                  label_1={item.title ? "Is Novel?" : "Is Expensive?"}
+                  label_2={item.title ? "Is Complete?" : "Is Collectable?"}
+                  onChange={(e) => {
+                    console.log(e.target);
+                  }}
+                />
+              </div>
+           
+          ))}
+           </div>
+      </div>
+    </div>
     </>
   );
 }

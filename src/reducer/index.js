@@ -41,16 +41,17 @@ function reducer(state = data, { type = null, payload }) {
       }
 
     case "SET_DISPLAYED_ITEMS":
-      console.log(payload)
-      var tempArr = state.dispalyedItems === undefined ? [undefined] : [...state.displayedItems, payload];
+      var tempArr =
+        state.dispalyedItems === undefined
+          ? [undefined]
+          : [...state.displayedItems, payload];
       if (tempArr[0] === undefined) {
-        console.log(payload)
         return { ...state, displayedItems: payload };
       } else {
         var newDispalyedItems = tempArr.filter(function (item, pos) {
           return tempArr.indexOf(item) == pos;
         });
-        console.log(newDispalyedItems)
+
         return { ...state, displayedItems: newDispalyedItems };
       }
   }
