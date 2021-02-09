@@ -1,6 +1,6 @@
 import React from "react";
 
-function Card({ description }) {
+function Card({ description, title, image, label_1, label_2, onChange }) {
   return (
     <div className="card" styles={{ width: "18rem" }}>
       <img className="card-img-top" src={image} alt="Card image cap" />
