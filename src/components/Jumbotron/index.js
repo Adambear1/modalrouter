@@ -6,7 +6,6 @@ function Jumbotron() {
   const dispatch = useDispatch();
 const store = useSelector(data => data)
 
-console.log(store)
     return (
         <div class="p-5 text-center bg-light">
         <h1 class="mb-3">Personal Collection</h1>

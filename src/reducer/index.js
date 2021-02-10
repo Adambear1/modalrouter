@@ -31,7 +31,7 @@ function reducer(state = data, { type = null, payload }) {
           collection: [
             ...state.collection,
             {
-              Watch: new WatchBox(payload.title, [
+              Watch: new WatchBox(payload.brand, [
                 isNew,
                 isCollectable,
               ]).addToCollection(),

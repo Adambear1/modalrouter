@@ -6,9 +6,11 @@ import api from "../api/index";
 import Card from "./Card";
 import Jumbotron from "./Jumbotron";
 import Footer from "./Footer";
+import Modal from "./Modal";
 function Home() {
   const [displayedItems, setDisplayedItems] = useState([]);
   const dispatch = useDispatch();
+  const state = useSelector(state => state)
   // ESLINT-IGNORE-NEXT-LINE
   useEffect(async () => {
     if (displayedItems.length > 1) {
@@ -37,6 +39,7 @@ function Home() {
   return (
     <>
       <Jumbotron />
+      <Modal/>
       <div className="container">
         <div className="row">
           <div className="masonry">
@@ -45,6 +48,7 @@ function Home() {
                 <div className="col-6 col-sm-4 col-lg-3">
                   <Card
                     key={item.title || item.brand}
+                    type={item.title ? "Book" : "Watch"}
                     id={item.title || item.brand}
                     description={
                       item.description ||
