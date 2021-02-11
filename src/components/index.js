@@ -9,6 +9,7 @@ import Footer from "./Footer";
 import Modal from "./Modal";
 function Home() {
   const [displayedItems, setDisplayedItems] = useState([]);
+  const [open, setOpen] = useState(false)
   const dispatch = useDispatch();
   const state = useSelector(state => state)
   // ESLINT-IGNORE-NEXT-LINE
@@ -38,8 +39,8 @@ function Home() {
   }, []);
   return (
     <>
-      <Jumbotron />
-      <Modal/>
+      <Jumbotron open={open} setOpen={setOpen} />
+      <Modal open={open} setOpen={setOpen}/>
       <div className="container">
         <div className="row">
           <div className="masonry">
