@@ -39,7 +39,19 @@ function reducer(state = data, { type = null, payload }) {
           ],
         };
       }
-
+    case "REMOVE_ITEM":
+      // return {
+      //   ...state,
+      //   collection: [
+      //     ...state.collection,
+      //     {
+      //       Book: new Bookshelf(payload.title, [
+      //         isComplete,
+      //         isGood,
+      //       ]).addToCollection(),
+      //     },
+      //   ],
+      // };
     case "SET_DISPLAYED_ITEMS":
       var tempArr =
         state.dispalyedItems === undefined
