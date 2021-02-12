@@ -40,18 +40,44 @@ function reducer(state = data, { type = null, payload }) {
         };
       }
     case "REMOVE_ITEM":
-      // return {
-      //   ...state,
-      //   collection: [
-      //     ...state.collection,
-      //     {
-      //       Book: new Bookshelf(payload.title, [
-      //         isComplete,
-      //         isGood,
-      //       ]).addToCollection(),
-      //     },
-      //   ],
-      // };
+      var collection = new Array();
+      state.collection.map(async (item, index) => {
+        for (var objName in state.collection[index]) {
+          for (var data in state.collection[index][objName]) {
+            if (collection.indexOf(state.collection[index]) === -1) {
+              if (state.collection[index][objName][data] === payload) {
+                return;
+              } else {
+                await collection.push(state.collection[index]);
+              }
+            }
+          }
+        }
+      });
+      return {
+        ...state,
+        collection: [...collection],
+      };
+    case "FAVORITE_ITEM":
+      var collection = new Array();
+      state.collection.map(async (item, index) => {
+        for (var objName in state.collection[index]) {
+          for (var data in state.collection[index][objName]) {
+            if (collection.indexOf(state.collection[index]) === -1) {
+              if (state.collection[index][objName][data] === payload) {
+               state.collection[index][objName].isFavorite === true ? delete state.collection[index][objName].isFavorite : state.collection[index][objName].isFavorite = true
+                return collection.push(state.collection[index])
+              } else{
+                return collection.push(state.collection[index])
+              }
+            }
+          }
+        }
+      });
+      return {
+        ...state,
+        collection: [...collection],
+      };
     case "SET_DISPLAYED_ITEMS":
       var tempArr =
         state.dispalyedItems === undefined

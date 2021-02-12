@@ -37,16 +37,9 @@ function Modal({ open, setOpen }) {
               </thead>
               {collection &&
               collection.map((item,index) => {
-                 console.log(collection)
-                 console.log(item)
-                 console.log(collection[index])
                for (var objName in collection[index]){
                   for (var data in collection[index][objName]){
-                   return  <Table index={index} type={collection[index][objName]["title"] ? "Book" : "Watch"} name={collection[index][objName][data]}/>
-                
-                    // console.log(collection[index][objName]["title" || "brand"])
-                    // // console.log(data)
-                    // // console.log(collection[index][objName][data])
+                   return  <Table index={index} type={collection[index][objName]["title"] ? "Book" : "Watch"} name={collection[index][objName][data]} favorite={collection[index][objName]["isFavorite"] ? true : false}/>
                   }
                
                }
