@@ -16,7 +16,6 @@ function Table({ index, name, type, favorite, extra_1, extra_2 }) {
   const favoriteItem = (payload) => {
     return dispatch({ type: "FAVORITE_ITEM", payload });
   };
-  console.log(store);
   return (
     <>
       <tbody>

@@ -18,7 +18,7 @@ function Card({ key, description, title, image, label_1, label_2, id, type }) {
   const dispatch = useDispatch();
   const store = useSelector((data) => data);
 
-  const addToCollection = async ({ target }) => {
+  const addToCollection = async () => {
     var payload = new Object();
     payload["type"] = await type;
     payload[compile(label_1)] = await ref_1.current.checked;
@@ -35,10 +35,12 @@ function Card({ key, description, title, image, label_1, label_2, id, type }) {
       <Body image={image} title={title} description={description} />
       <Footer label_1={label_1} label_2={label_2} ref_1={ref_1} ref_2={ref_2} />
       <Buttons
+        store={store && store.collection}
+        title={title}
         selected={selected}
         onClick={(e) => {
           setSelected(!selected);
-          return addToCollection(e);
+          return addToCollection();
         }}
       />
     </div>

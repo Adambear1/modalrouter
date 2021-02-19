@@ -19,50 +19,35 @@ function reducer(state = data, { type = null, payload }) {
 
     case "ADD_ITEM":
       if (payload.type === "Book") {
-        var isComplete = payload.isComplete ? true : false;
-        var isGood = payload.isGood ? true : false;
         return {
           ...state,
           collection: [
             ...state.collection,
-            {
-              Book: new Bookshelf(payload.title, [
-                isComplete,
-                isGood,
-              ]).addToCollection(),
-            },
+
+            new Bookshelf(payload).addToCollection(),
           ],
         };
       }
       if (payload.type === "Watch") {
-        var isNew = payload.isNew ? true : false;
-        var isCollectable = payload.isCollectable ? true : false;
         return {
           ...state,
           collection: [
             ...state.collection,
-            {
-              Watch: new WatchBox(payload.brand, [
-                isNew,
-                isCollectable,
-              ]).addToCollection(),
-            },
+
+            new WatchBox(payload).addToCollection(),
+            ,
           ],
         };
       }
     case "REMOVE_ITEM":
       var collection = new Array();
+
       state.collection.map(async (item, index) => {
-        for (var objName in state.collection[index]) {
-          for (var data in state.collection[index][objName]) {
-            if (collection.indexOf(state.collection[index]) === -1) {
-              if (state.collection[index][objName][data] === payload) {
-                return;
-              } else {
-                await collection.push(state.collection[index]);
-              }
-            }
-          }
+        var name = item.type === "Book" ? item.title : item.brand;
+        if (name === payload) {
+          return;
+        } else {
+          await collection.push(state.collection[index]);
         }
       });
       return {
@@ -71,19 +56,17 @@ function reducer(state = data, { type = null, payload }) {
       };
     case "FAVORITE_ITEM":
       var collection = new Array();
+
       state.collection.map(async (item, index) => {
-        for (var objName in state.collection[index]) {
-          for (var data in state.collection[index][objName]) {
-            if (collection.indexOf(state.collection[index]) === -1) {
-              if (state.collection[index][objName][data] === payload) {
-                state.collection[index][objName].isFavorite === true
-                  ? delete state.collection[index][objName].isFavorite
-                  : (state.collection[index][objName].isFavorite = true);
-                return collection.push(state.collection[index]);
-              } else {
-                return collection.push(state.collection[index]);
-              }
-            }
+        var name = item.type === "Book" ? item.title : item.brand;
+        if (collection.indexOf(item) === -1) {
+          if (name === payload) {
+            item.isFavorite === true
+              ? delete item.isFavorite
+              : (item.isFavorite = true);
+            return collection.push(item);
+          } else {
+            return collection.push(item);
           }
         }
       });

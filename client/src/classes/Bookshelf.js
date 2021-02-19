@@ -1,15 +1,15 @@
-var Collection = require("./Collection")
+var Collection = require("./Collection");
 
 class Bookshelf {
-    constructor(title, [isComplete, isGood]){
-        this.type = "Book"
-        this.title = title ;
-        this.isComplete = isComplete;
-        this.isGood = isGood
-    }
-    addToCollection(){
-        return new Collection(this).finish()
-    }
+  constructor(payload) {
+    this.type = "Book";
+    this.title = payload.title;
+    this.isComplete = payload.isComplete || false;
+    this.isGood = payload.isGood || false;
+  }
+  addToCollection() {
+    return new Collection(this).finish();
+  }
 }
 
-module.exports = Bookshelf
+module.exports = Bookshelf;

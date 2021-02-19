@@ -16,18 +16,7 @@ function Home() {
   // ESLINT-IGNORE-NEXT-LINE
   useMemo(() => {
     LocalStorage.get().then(async ({ data }) => {
-      console.log(data);
       var payload = data.length === 0 ? null : data;
-      // var payload = new Array();
-      // if (data.length === 0) {
-      //   payload = null;
-      // } else {
-      // data.map((item) => {
-      //   item = JSON.parse(item);
-      //   payload.push(item);
-      // });
-      // }
-      console.log(payload);
       return dispatch({ type: "SET_COLLECTED_ITEMS", payload });
     });
   }, []);

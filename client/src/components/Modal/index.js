@@ -1,22 +1,22 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 // styles
 import "./styles.css";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 // Components
-import Table from "./Table"
+import Table from "./Table";
 
 function Modal({ open, setOpen }) {
-  const [collection, setCollection] = useState(null)
+  const [collection, setCollection] = useState(null);
   const dispatch = useDispatch();
   const store = useSelector((data) => data);
-  useEffect(()=>{
+  useEffect(() => {
     try {
-      setCollection(store.collection)
-    } catch ({message}) {
-      console.log(message)
+      setCollection(store.collection);
+    } catch ({ message }) {
+      console.log(message);
     }
-  }, [store])
+  }, [store]);
 
   return (
     <>
@@ -36,16 +36,16 @@ function Modal({ open, setOpen }) {
                 </tr>
               </thead>
               {collection &&
-              collection.map((item,index) => {
-               for (var objName in collection[index]){
-                  for (var data in collection[index][objName]){
-                   return  <Table index={index} type={collection[index][objName]["title"] ? "Book" : "Watch"} name={collection[index][objName][data]} favorite={collection[index][objName]["isFavorite"] ? true : false}/>
-                  }
-               
-               }
-              })
-               
-               }
+                collection.map((item, index) => {
+                  return (
+                    <Table
+                      index={index}
+                      type={item.type}
+                      name={item.type === "Book" ? item.title : item.brand}
+                      favorite={item["isFavorite"] ? true : false}
+                    />
+                  );
+                })}
             </table>
           </div>
         </div>

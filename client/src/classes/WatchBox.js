@@ -1,16 +1,16 @@
-var Collection = require("./Collection")
+var Collection = require("./Collection");
 
 class WatchBox {
-    constructor(brand, [isNew, isCollectable]){
-        this.type = "Watch";
-        this.brand = brand;
-        this.isNew = isNew;
-        this.isCollectable = isCollectable
-    }
+  constructor(payload) {
+    this.type = "Watch";
+    this.brand = payload.brand;
+    this.isNew = payload.isNew || false;
+    this.isCollectable = payload.isCollectable || false;
+  }
 
-    addToCollection(){
-        return new Collection(this).finish()
-    }
+  addToCollection() {
+    return new Collection(this).finish();
+  }
 }
 
-module.exports = WatchBox
+module.exports = WatchBox;

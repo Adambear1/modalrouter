@@ -3,12 +3,14 @@ class Collection {
     var { type } = builder;
     switch (type) {
       case "Book":
-        this.title = builder.title
+        this.type = "Book";
+        this.title = builder.title;
         this.isCompelte = builder.isCompelte || false;
         this.isGood = builder.isGood || false;
         return;
       case "Watch":
-        this.brand = builder.brand
+        this.type = "Watch";
+        this.brand = builder.brand;
         this.isCollectable = builder.isCollectable || false;
         this.isNew = builder.isNew || false;
         return;

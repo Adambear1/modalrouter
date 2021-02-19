@@ -1,0 +1,9 @@
+.description-abv {
+    height: auto;
+    overflow: auto;
+}
+
+.description-reg {
+    height: 35vh;
+    overflow: auto;
+}
