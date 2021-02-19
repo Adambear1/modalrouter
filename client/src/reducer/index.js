@@ -3,6 +3,7 @@ import { WatchBox, Bookshelf } from "../classes";
 const data = {
   collection: [],
   displayedItems: [],
+  online: true,
 };
 
 function reducer(state = data, { type = null, payload }) {
@@ -16,7 +17,9 @@ function reducer(state = data, { type = null, payload }) {
           collection: payload,
         };
       }
-
+    case "ONLINE_STATUS": {
+      return { ...state, online: payload };
+    }
     case "ADD_ITEM":
       if (payload.type === "Book") {
         return {
