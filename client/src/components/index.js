@@ -8,11 +8,14 @@ import Jumbotron from "./Jumbotron";
 import Footer from "./Footer";
 import Modal from "./Modal";
 import LocalStorage from "../api/LocalStorage";
+import Selector from "./Selector";
+import { getBooks, getWatches } from "../utils";
 function Home() {
+  const [state, setState] = useState([]);
   const [displayedItems, setDisplayedItems] = useState([]);
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
-  const state = useSelector((state) => state);
+  const store = useSelector((store) => store);
   // ESLINT-IGNORE-NEXT-LINE
   useMemo(() => {
     LocalStorage.get().then(async ({ data }) => {
@@ -24,33 +27,26 @@ function Home() {
     if (displayedItems.length > 1) {
       return;
     } else {
-      var arr = [];
-      var books = await api.BooksDB.GetAll().then(({ data }) => {
-        data.items.map(({ volumeInfo, saleInfo }) => {
-          const { imageLinks, description, title } = volumeInfo;
-          const price = (Math.random() * 35 + 6).toFixed(2);
-          var obj = {};
-          obj["title"] = title;
-          obj["description"] = description;
-          obj["image"] = imageLinks.thumbnail;
-          obj["price"] = price;
-          arr.push(obj);
-        });
-      });
-      var watches = await api.WatchesDB.GetAll().map((item) => {
-        arr.push(item);
-      });
-      setDisplayedItems(arr);
-      return dispatch({ type: "SET_DISPLAYED_ITEMS", payload: arr });
+      var payload = [];
+      if (state) {
+      }
+      // await getBooks().then((data) => (payload = [...payload, ...data]));
+      await getWatches().then((data) => (payload = [...payload, ...data]));
+      console.log(payload);
+      setDisplayedItems(payload);
+      return dispatch({ type: "SET_DISPLAYED_ITEMS", payload });
     }
   }, []);
+
   console.log(state);
+
   return (
     <>
       <Jumbotron open={open} setOpen={setOpen} />
       <Modal open={open} setOpen={setOpen} />
       <div className="container">
         <div className="row">
+          <Selector state={state} setState={setState} />
           <div className="masonry">
             {displayedItems.length > 1 &&
               displayedItems.map((item) => (

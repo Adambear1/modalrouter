@@ -1,12 +1,9 @@
-import React, { useState } from "react";
+import React, { useMemo } from "react";
 import { BagCheck, FilePlus } from "react-bootstrap-icons";
 
-function Buttons({ onClick, id, selected, title, store }) {
+function Buttons({ onClick, id, selected }) {
   return (
     <div className="row">
-      {console.log(title)}
-      {console.log(store)}
-      {/* {console.log(store.indexOf(title))} */}
       <button
         className={
           selected

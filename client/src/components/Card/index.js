@@ -17,7 +17,16 @@ function Card({ key, description, title, image, label_1, label_2, id, type }) {
   const ref_2 = useRef();
   const dispatch = useDispatch();
   const store = useSelector((data) => data);
-
+  useMemo(() => {
+    if (store) {
+      store.collection.map((item) => {
+        var name = item.title || item.brand;
+        if (name === title) {
+          setSelected(true);
+        }
+      });
+    }
+  }, []);
   const addToCollection = async () => {
     var payload = new Object();
     payload["type"] = await type;
