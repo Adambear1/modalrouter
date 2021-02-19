@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useMemo } from "react";
 // Styles
 import "../styles.css";
 // Components
@@ -8,7 +8,8 @@ import Footer from "./Footer";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 // Utils
-import { compile } from "../../utils";
+import { compile, updateLocalStorage } from "../../utils";
+import LocalStorage from "../../api/LocalStorage";
 
 function Card({ key, description, title, image, label_1, label_2, id, type }) {
   const [selected, setSelected] = useState(false);
@@ -18,12 +19,14 @@ function Card({ key, description, title, image, label_1, label_2, id, type }) {
   const store = useSelector((data) => data);
 
   const addToCollection = async ({ target }) => {
-    const { parentNode } = target;
     var payload = new Object();
     payload["type"] = await type;
     payload[compile(label_1)] = await ref_1.current.checked;
     payload[compile(label_2)] = await ref_2.current.checked;
     payload[type === "Book" ? "title" : "brand"] = await id;
+    LocalStorage.post(payload).then(({ data }) => {
+      updateLocalStorage(data);
+    });
     return dispatch({ type: "ADD_ITEM", payload });
   };
 

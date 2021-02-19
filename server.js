@@ -21,10 +21,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // Routes
-// app.use("/api/subscribers", require("./routes/api/Subscribers"));
-// app.use("/api/reviews", require("./routes/api/Reviews"));
-// app.use("/api/booking", require("./routes/api/Booking"));
-
+app.use(require("./routes"));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "./client/build/index.html"));
 });

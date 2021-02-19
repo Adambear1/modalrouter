@@ -1,3 +1,4 @@
+import LocalStorage from "../api/LocalStorage";
 import { WatchBox, Bookshelf } from "../classes";
 const data = {
   collection: [],
@@ -6,6 +7,16 @@ const data = {
 
 function reducer(state = data, { type = null, payload }) {
   switch (type) {
+    case "SET_COLLECTED_ITEMS":
+      if (payload === null) {
+        return;
+      } else {
+        return {
+          ...state,
+          collection: payload,
+        };
+      }
+
     case "ADD_ITEM":
       if (payload.type === "Book") {
         var isComplete = payload.isComplete ? true : false;
@@ -65,10 +76,12 @@ function reducer(state = data, { type = null, payload }) {
           for (var data in state.collection[index][objName]) {
             if (collection.indexOf(state.collection[index]) === -1) {
               if (state.collection[index][objName][data] === payload) {
-               state.collection[index][objName].isFavorite === true ? delete state.collection[index][objName].isFavorite : state.collection[index][objName].isFavorite = true
-                return collection.push(state.collection[index])
-              } else{
-                return collection.push(state.collection[index])
+                state.collection[index][objName].isFavorite === true
+                  ? delete state.collection[index][objName].isFavorite
+                  : (state.collection[index][objName].isFavorite = true);
+                return collection.push(state.collection[index]);
+              } else {
+                return collection.push(state.collection[index]);
               }
             }
           }
@@ -80,17 +93,16 @@ function reducer(state = data, { type = null, payload }) {
       };
     case "SET_DISPLAYED_ITEMS":
       var tempArr =
-        state.dispalyedItems === undefined
+        state.displayedItems === undefined
           ? [undefined]
           : [...state.displayedItems, payload];
       if (tempArr[0] === undefined) {
         return { ...state, displayedItems: payload };
       } else {
-        var newDispalyedItems = tempArr.filter(function (item, pos) {
+        var newDisplayedItems = tempArr.filter(function (item, pos) {
           return tempArr.indexOf(item) == pos;
         });
-
-        return { ...state, displayedItems: newDispalyedItems };
+        return { ...state, displayedItems: newDisplayedItems };
       }
   }
 }

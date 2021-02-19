@@ -1,14 +1,14 @@
-import reducer from "./reducer"
-import {createStore} from "redux"
-import {Provider} from "react-redux"
-import Home from "./components"
-
+import { useEffect } from "react";
+import reducer from "./reducer";
+import { createStore } from "redux";
+import { Provider, useDispatch } from "react-redux";
+import Home from "./components";
 
 function App() {
-  const store = createStore(reducer)
+  const store = createStore(reducer);
   return (
     <Provider store={store}>
-        <Home/>
+      <Home />
     </Provider>
   );
 }
