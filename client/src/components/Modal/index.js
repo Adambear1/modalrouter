@@ -32,6 +32,7 @@ function Modal({ open, setOpen }) {
                   <th scope="col">Id</th>
                   <th scope="col">Type</th>
                   <th scope="col">Name</th>
+                  <th scope="col">Favorite</th>
                   <th scope="col">Remove</th>
                 </tr>
               </thead>

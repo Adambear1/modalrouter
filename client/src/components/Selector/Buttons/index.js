@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { filterState } from "../../../utils";
+import { useDispatch, useSelector } from "react-redux";
 
 function Buttons({ value, state, setState }) {
   const [selected, setSelected] = useState(false);
+  const dispatch = useDispatch();
+  const store = useSelector((store) => store);
   return (
     <button
       type="btn"
@@ -16,6 +19,12 @@ function Buttons({ value, state, setState }) {
         setState(filterState([...state, value]));
         setSelected(!selected);
       }}
+      disabled={value === "Books" && !navigator.onLine}
+      title={
+        value === "Books" &&
+        !navigator.onLine &&
+        "This Feature Requires Internet for Access"
+      }
     >
       {value}
     </button>

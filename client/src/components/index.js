@@ -26,32 +26,27 @@ function Home() {
     return dispatch({ type: "ONLINE_STATUS", payload: navigator.onLine });
   }, [navigator.onLine]);
   useEffect(async () => {
-    if (displayedItems.length > 1) {
-      return;
-    } else {
-      if (state) {
-        setDisplayedItems([]);
-        state.map((item) => {
-          if (item.length > 0) {
-            console.log(item);
-            if (item === "Watches") {
-              getWatches().then((data) =>
-                setDisplayedItems([...displayedItems, ...data])
-              );
-            }
-            if (item === "Books") {
-              getBooks().then((data) =>
-                setDisplayedItems([...displayedItems, ...data])
-              );
-            }
-          } else {
-            return setDisplayedItems([]);
+    if (state) {
+      setDisplayedItems([]);
+      state.map((item) => {
+        if (item.length > 0) {
+          console.log(item);
+          if (item === "Watches") {
+            getWatches().then((data) =>
+              setDisplayedItems([...displayedItems, ...data])
+            );
           }
-        });
-      }
-      console.log(displayedItems);
-      return dispatch({ type: "SET_DISPLAYED_ITEMS", displayedItems });
+          if (item === "Books") {
+            getBooks().then((data) =>
+              setDisplayedItems([...displayedItems, ...data])
+            );
+          }
+        } else {
+          return setDisplayedItems([]);
+        }
+      });
     }
+    return dispatch({ type: "SET_DISPLAYED_ITEMS", displayedItems });
   }, [state]);
 
   return (

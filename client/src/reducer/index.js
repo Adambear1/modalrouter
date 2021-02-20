@@ -72,7 +72,7 @@ function reducer(state = data, { type = null, payload }) {
           }
         }
       });
-      api.LocalStorage.post(collection);
+      api.LocalStorage.update(collection);
       return {
         ...state,
         collection: [...collection],
