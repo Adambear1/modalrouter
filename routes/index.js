@@ -17,7 +17,7 @@ router.get("/api", async (req, res) => {
 router.post("/api", async ({ body }, res) => {
   try {
     data = body.body;
-    log("Adding " + data + " to local storage");
+    log("Adding " + JSON.stringify(data) + " to local storage");
     var response = localStorage.setStorage(data);
     return res.json(response);
   } catch ({ message }) {

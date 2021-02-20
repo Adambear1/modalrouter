@@ -5,6 +5,7 @@ import "./styles.css";
 import { Star, Trash } from "react-bootstrap-icons";
 import { useDispatch, useSelector } from "react-redux";
 import Card from "../Card";
+import api from "../../../api";
 
 function Table({ index, name, type, favorite, extra_1, extra_2 }) {
   const [open, setOpen] = useState(false);

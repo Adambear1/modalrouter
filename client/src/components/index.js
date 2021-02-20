@@ -10,6 +10,7 @@ import Modal from "./Modal";
 import LocalStorage from "../api/LocalStorage";
 import Selector from "./Selector";
 import { getBooks, getWatches } from "../utils";
+import NoItemsFound from "./NoItemsFound";
 function Home() {
   const [state, setState] = useState([]);
   const [displayedItems, setDisplayedItems] = useState([]);
@@ -62,8 +63,8 @@ function Home() {
           <div className="container">
             <div className="row">
               <Selector state={state} setState={setState} />
-              <div className="masonry">
-                {displayedItems.length > 1 &&
+              <div className={displayedItems.length > 0 && "masonry"}>
+                {displayedItems.length > 0 &&
                   displayedItems.map((item) => (
                     <div className="col-6 col-sm-4 col-lg-3">
                       <Card
@@ -84,6 +85,7 @@ function Home() {
                     </div>
                   ))}
               </div>
+              {displayedItems.length === 0 && <NoItemsFound />}
             </div>
           </div>
           <Footer />

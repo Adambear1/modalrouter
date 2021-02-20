@@ -1,3 +1,4 @@
+import api from "../api";
 import LocalStorage from "../api/LocalStorage";
 import { WatchBox, Bookshelf } from "../classes";
 const data = {
@@ -26,7 +27,6 @@ function reducer(state = data, { type = null, payload }) {
           ...state,
           collection: [
             ...state.collection,
-
             new Bookshelf(payload).addToCollection(),
           ],
         };
@@ -44,7 +44,6 @@ function reducer(state = data, { type = null, payload }) {
       }
     case "REMOVE_ITEM":
       var collection = new Array();
-
       state.collection.map(async (item, index) => {
         var name = item.type === "Book" ? item.title : item.brand;
         if (name === payload) {
@@ -53,13 +52,14 @@ function reducer(state = data, { type = null, payload }) {
           await collection.push(state.collection[index]);
         }
       });
+      console.log(collection);
+      // api.LocalStorage.post(collection);
       return {
         ...state,
         collection: [...collection],
       };
     case "FAVORITE_ITEM":
       var collection = new Array();
-
       state.collection.map(async (item, index) => {
         var name = item.type === "Book" ? item.title : item.brand;
         if (collection.indexOf(item) === -1) {
@@ -73,6 +73,7 @@ function reducer(state = data, { type = null, payload }) {
           }
         }
       });
+      api.LocalStorage.post(collection);
       return {
         ...state,
         collection: [...collection],
