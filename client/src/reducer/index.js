@@ -1,6 +1,7 @@
 import api from "../api";
 import LocalStorage from "../api/LocalStorage";
 import { WatchBox, Bookshelf } from "../classes";
+import { filterState } from "../utils";
 const data = {
   collection: [],
   displayedItems: [],
@@ -88,7 +89,7 @@ function reducer(state = data, { type = null, payload }) {
         var newDisplayedItems = tempArr.filter(function (item, pos) {
           return tempArr.indexOf(item) == pos;
         });
-        return { ...state, displayedItems: newDisplayedItems };
+        return { ...state, displayedItems: filterState(newDisplayedItems) };
       }
   }
 }

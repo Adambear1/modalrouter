@@ -21,6 +21,13 @@ export const filterState = (state) => {
     return state;
   }, []);
 };
+
+export const filterDisplayedItems = (displayedItems) => {
+  return displayedItems.filter(
+    (v, i, a) =>
+      a.findIndex((t) => JSON.stringify(t) === JSON.stringify(v)) === i
+  );
+};
 export const getBooks = async () => {
   var books = new Array();
   api.BooksDB.GetAll().then(({ data }) => {

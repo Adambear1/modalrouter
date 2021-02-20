@@ -9,7 +9,7 @@ import Footer from "./Footer";
 import Modal from "./Modal";
 import LocalStorage from "../api/LocalStorage";
 import Selector from "./Selector";
-import { getBooks, getWatches } from "../utils";
+import { filterDisplayedItems, getBooks, getWatches } from "../utils";
 import NoItemsFound from "./NoItemsFound";
 function Home() {
   const [state, setState] = useState([]);
@@ -19,6 +19,14 @@ function Home() {
   const store = useSelector((store) => store);
   // ESLINT-IGNORE-NEXT-LINE
   useMemo(() => {
+    // Set Offline Status
+    window.addEventListener("offline", () => {
+      return dispatch({ type: "ONLINE_STATUS", payload: navigator.onLine });
+    });
+    window.addEventListener("online", () => {
+      return dispatch({ type: "ONLINE_STATUS", payload: navigator.onLine });
+    });
+    // Set Storage
     LocalStorage.get().then(async ({ data }) => {
       var payload = data.length === 0 ? null : data;
       return dispatch({ type: "SET_COLLECTED_ITEMS", payload });
@@ -26,27 +34,30 @@ function Home() {
     return dispatch({ type: "ONLINE_STATUS", payload: navigator.onLine });
   }, [navigator.onLine]);
   useEffect(async () => {
+    setDisplayedItems([]);
     if (state) {
-      setDisplayedItems([]);
-      state.map((item) => {
+      state.map(async (item) => {
         if (item.length > 0) {
-          console.log(item);
           if (item === "Watches") {
-            getWatches().then((data) =>
-              setDisplayedItems([...displayedItems, ...data])
-            );
+            console.log(item);
+            getWatches().then((data) => {
+              var arr = [...displayedItems, ...data];
+              return setDisplayedItems(filterDisplayedItems(arr));
+            });
           }
           if (item === "Books") {
-            getBooks().then((data) =>
-              setDisplayedItems([...displayedItems, ...data])
-            );
+            console.log(item);
+            getBooks().then((data) => {
+              var arr = [...displayedItems, ...data];
+              return setDisplayedItems(filterDisplayedItems(arr));
+            });
           }
         } else {
           return setDisplayedItems([]);
         }
       });
     }
-    return dispatch({ type: "SET_DISPLAYED_ITEMS", displayedItems });
+    return dispatch({ type: "SET_DISPLAYED_ITEMS", payload: displayedItems });
   }, [state]);
 
   return (
@@ -61,28 +72,23 @@ function Home() {
               <div className={displayedItems.length > 0 && "masonry"}>
                 {displayedItems.length > 0 &&
                   displayedItems.map((item) => (
-                    <div className="col-6 col-sm-4 col-lg-3">
-                      {" "}
-                      <Card
-                        key={item.title || item.brand}
-                        type={item.title ? "Book" : "Watch"}
-                        id={item.title || item.brand}
-                        description={
-                          item.description ||
-                          "Labore aute veniam laborum et dolore id cupidatat elit veniam."
-                        }
-                        title={item.title || item.brand}
-                        image={item.image}
-                        label_1={item.title ? "Is Novel?" : "Is Expensive?"}
-                        label_2={
-                          item.title ? "Is Complete?" : "Is Collectable?"
-                        }
-                      />
-                    </div>
+                    <Card
+                      key={item.title || item.brand}
+                      type={item.title ? "Book" : "Watch"}
+                      id={item.title || item.brand}
+                      description={
+                        item.description ||
+                        "Labore aute veniam laborum et dolore id cupidatat elit veniam."
+                      }
+                      title={item.title || item.brand}
+                      image={item.image}
+                      label_1={item.title ? "Is Novel?" : "Is Expensive?"}
+                      label_2={item.title ? "Is Complete?" : "Is Collectable?"}
+                    />
                   ))}
               </div>
-              {displayedItems.length === 0 && <NoItemsFound />}
             </div>
+            {displayedItems.length === 0 && <NoItemsFound />}
           </div>
           <Footer />
         </>
