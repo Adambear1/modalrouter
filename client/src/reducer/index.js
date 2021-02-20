@@ -52,8 +52,7 @@ function reducer(state = data, { type = null, payload }) {
           await collection.push(state.collection[index]);
         }
       });
-      console.log(collection);
-      // api.LocalStorage.post(collection);
+      api.LocalStorage.update(collection);
       return {
         ...state,
         collection: [...collection],

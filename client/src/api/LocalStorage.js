@@ -11,4 +11,9 @@ export default {
       body: data,
     });
   },
+  update: async (data) => {
+    return axios.post(route + "/update", {
+      body: data,
+    });
+  },
 };

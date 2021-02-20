@@ -34,6 +34,7 @@ function Card({ key, description, title, image, label_1, label_2, id, type }) {
     payload[compile(label_2)] = await ref_2.current.checked;
     payload[type === "Book" ? "title" : "brand"] = await id;
     LocalStorage.post(payload).then(({ data }) => {
+      console.log(data);
       updateLocalStorage(data);
     });
     return dispatch({ type: "ADD_ITEM", payload });

@@ -13,6 +13,14 @@ class LocalStorage {
   getAll() {
     return this.items;
   }
+  updateStorage(data) {
+    writeFile("localStorage.json", JSON.stringify(data), (error) => {
+      if (error) {
+        console.error(error);
+      }
+    });
+    return data;
+  }
   setStorage(data) {
     var array = this.items;
     array.push(data);

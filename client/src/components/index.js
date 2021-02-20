@@ -67,6 +67,7 @@ function Home() {
                 {displayedItems.length > 0 &&
                   displayedItems.map((item) => (
                     <div className="col-6 col-sm-4 col-lg-3">
+                      {" "}
                       <Card
                         key={item.title || item.brand}
                         type={item.title ? "Book" : "Watch"}

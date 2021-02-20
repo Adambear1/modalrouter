@@ -14,6 +14,18 @@ router.get("/api", async (req, res) => {
     return res.json(log(message, "Error"));
   }
 });
+router.post("/api/update", ({ body, res }) => {
+  try {
+    data = body.body;
+    log(
+      "Updating collection.... Resetting as " +
+        JSON.stringify(data) +
+        " at local storage"
+    );
+    var response = localStorage.updateStorage(data);
+    return res.json(response);
+  } catch ({ message }) {}
+});
 router.post("/api", async ({ body }, res) => {
   try {
     data = body.body;
