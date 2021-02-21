@@ -21,7 +21,14 @@ export const filterState = (state) => {
     return state;
   }, []);
 };
-
+export const checkOnlineStatus = (dispatch) => {
+  window.addEventListener("offline", () => {
+    return dispatch({ type: "ONLINE_STATUS", payload: navigator.onLine });
+  });
+  window.addEventListener("online", () => {
+    return dispatch({ type: "ONLINE_STATUS", payload: navigator.onLine });
+  });
+};
 export const filterDisplayedItems = (displayedItems) => {
   return displayedItems.filter(
     (v, i, a) =>
@@ -35,11 +42,15 @@ export const getBooks = async () => {
       const { imageLinks, description, title } = volumeInfo;
       const price = (Math.random() * 35 + 6).toFixed(2);
       var obj = {};
-      obj["title"] = title;
-      obj["description"] = description;
-      obj["image"] = imageLinks.thumbnail;
+      obj["title"] = title || "Lorem Ipsum";
+      obj["description"] =
+        description ||
+        "Pellentesque vehicula fermentum nisl ut varius. Phasellus et enim semper, faucibus neque eu, aliquam elit. Vestibulum ac vehicula risus. Duis tincidunt nisl in odio hendrerit fermentum. Donec vestibulum neque iaculis, commodo tellus id, dignissim dui.";
+      obj["image"] =
+        (imageLinks && imageLinks.thumbnail) ||
+        "https://www.gaithersburgdental.com/wp-content/uploads/2016/10/orionthemes-placeholder-image.png";
       obj["price"] = price;
-      books.push(obj);
+      return books.push(obj);
     });
   });
   return books;

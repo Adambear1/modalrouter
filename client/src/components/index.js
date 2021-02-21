@@ -9,7 +9,12 @@ import Footer from "./Footer";
 import Modal from "./Modal";
 import LocalStorage from "../api/LocalStorage";
 import Selector from "./Selector";
-import { filterDisplayedItems, getBooks, getWatches } from "../utils";
+import {
+  checkOnlineStatus,
+  filterDisplayedItems,
+  getBooks,
+  getWatches,
+} from "../utils";
 import NoItemsFound from "./NoItemsFound";
 function Home() {
   const [state, setState] = useState([]);
@@ -19,14 +24,7 @@ function Home() {
   const store = useSelector((store) => store);
   // ESLINT-IGNORE-NEXT-LINE
   useMemo(() => {
-    // Set Offline Status
-    window.addEventListener("offline", () => {
-      return dispatch({ type: "ONLINE_STATUS", payload: navigator.onLine });
-    });
-    window.addEventListener("online", () => {
-      return dispatch({ type: "ONLINE_STATUS", payload: navigator.onLine });
-    });
-    // Set Storage
+    checkOnlineStatus(dispatch);
     LocalStorage.get().then(async ({ data }) => {
       var payload = data.length === 0 ? null : data;
       return dispatch({ type: "SET_COLLECTED_ITEMS", payload });
@@ -48,6 +46,7 @@ function Home() {
           if (item === "Books") {
             console.log(item);
             getBooks().then((data) => {
+              console.log(data);
               var arr = [...displayedItems, ...data];
               return setDisplayedItems(filterDisplayedItems(arr));
             });
@@ -57,6 +56,7 @@ function Home() {
         }
       });
     }
+    console.log(displayedItems);
     return dispatch({ type: "SET_DISPLAYED_ITEMS", payload: displayedItems });
   }, [state]);
 
