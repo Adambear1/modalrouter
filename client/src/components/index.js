@@ -17,10 +17,12 @@ import {
 } from "../utils";
 import NoItemsFound from "./NoItemsFound";
 import ConnectionStatusIcon from "./ConnectionStatusIcon";
+import Loading from "./Loading";
 function Home() {
   const [state, setState] = useState([]);
   const [displayedItems, setDisplayedItems] = useState([]);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const store = useSelector((store) => store);
   // ESLINT-IGNORE-NEXT-LINE
@@ -38,27 +40,43 @@ function Home() {
       state.map(async (item) => {
         if (item.length > 0) {
           if (item === "Watches") {
-            console.log(item);
             getWatches().then((data) => {
-              var arr = [...displayedItems, ...data];
-              return setDisplayedItems(filterDisplayedItems(arr));
+              setLoading(true);
+              setTimeout(() => {
+                setLoading(false);
+                setDisplayedItems(
+                  filterDisplayedItems([...displayedItems, ...data])
+                );
+                console.log(displayedItems);
+              }, 400);
             });
           }
           if (item === "Books") {
-            console.log(item);
             getBooks().then((data) => {
-              console.log(data);
-              var arr = [...displayedItems, ...data];
-              return setDisplayedItems(filterDisplayedItems(arr));
+              setLoading(true);
+              setTimeout(() => {
+                setLoading(false);
+                setDisplayedItems(
+                  filterDisplayedItems([...displayedItems, ...data])
+                );
+                console.log(displayedItems);
+              }, 500);
             });
           }
         } else {
+          setLoading(false);
           return setDisplayedItems([]);
         }
       });
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        return dispatch({
+          type: "SET_DISPLAYED_ITEMS",
+          payload: displayedItems,
+        });
+      }, 2000);
     }
-    console.log(displayedItems);
-    return dispatch({ type: "SET_DISPLAYED_ITEMS", payload: displayedItems });
   }, [state]);
 
   return (
@@ -70,24 +88,30 @@ function Home() {
           <div className="container">
             <div className="row">
               <Selector state={state} setState={setState} />
-              <div className={displayedItems.length > 0 && "masonry"}>
-                {displayedItems.length > 0 &&
-                  displayedItems.map((item) => (
-                    <Card
-                      key={item.title || item.brand}
-                      type={item.title ? "Book" : "Watch"}
-                      id={item.title || item.brand}
-                      description={
-                        item.description ||
-                        "Labore aute veniam laborum et dolore id cupidatat elit veniam."
-                      }
-                      title={item.title || item.brand}
-                      image={item.image}
-                      label_1={item.title ? "Is Novel?" : "Is Expensive?"}
-                      label_2={item.title ? "Is Complete?" : "Is Collectable?"}
-                    />
-                  ))}
-              </div>
+              {loading ? (
+                <Loading />
+              ) : (
+                <div className={displayedItems.length > 0 && "masonry"}>
+                  {displayedItems.length > 0 &&
+                    displayedItems.map((item) => (
+                      <Card
+                        key={item.title || item.brand}
+                        type={item.title ? "Book" : "Watch"}
+                        id={item.title || item.brand}
+                        description={
+                          item.description ||
+                          "Labore aute veniam laborum et dolore id cupidatat elit veniam."
+                        }
+                        title={item.title || item.brand}
+                        image={item.image}
+                        label_1={item.title ? "Is Novel?" : "Is Expensive?"}
+                        label_2={
+                          item.title ? "Is Complete?" : "Is Collectable?"
+                        }
+                      />
+                    ))}
+                </div>
+              )}
             </div>
             {displayedItems.length === 0 && <NoItemsFound />}
           </div>

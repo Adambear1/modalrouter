@@ -37,23 +37,27 @@ export const filterDisplayedItems = (displayedItems) => {
 };
 export const getBooks = async () => {
   var books = new Array();
-  api.BooksDB.GetAll().then(({ data }) => {
-    data.items.map(({ volumeInfo, saleInfo }) => {
-      const { imageLinks, description, title } = volumeInfo;
-      const price = (Math.random() * 35 + 6).toFixed(2);
-      var obj = {};
-      obj["title"] = title || "Lorem Ipsum";
-      obj["description"] =
-        description ||
-        "Pellentesque vehicula fermentum nisl ut varius. Phasellus et enim semper, faucibus neque eu, aliquam elit. Vestibulum ac vehicula risus. Duis tincidunt nisl in odio hendrerit fermentum. Donec vestibulum neque iaculis, commodo tellus id, dignissim dui.";
-      obj["image"] =
-        (imageLinks && imageLinks.thumbnail) ||
-        "https://www.gaithersburgdental.com/wp-content/uploads/2016/10/orionthemes-placeholder-image.png";
-      obj["price"] = price;
-      return books.push(obj);
+
+  return new Promise(function (resolve, reject) {
+    api.BooksDB.GetAll().then(({ data }) => {
+      data.items.map(({ volumeInfo, saleInfo }) => {
+        const { imageLinks, description, title } = volumeInfo;
+        const price = (Math.random() * 35 + 6).toFixed(2);
+        var obj = {};
+        obj["title"] = title || "Lorem Ipsum";
+        obj["description"] =
+          description ||
+          "Pellentesque vehicula fermentum nisl ut varius. Phasellus et enim semper, faucibus neque eu, aliquam elit. Vestibulum ac vehicula risus. Duis tincidunt nisl in odio hendrerit fermentum. Donec vestibulum neque iaculis, commodo tellus id, dignissim dui.";
+        obj["image"] =
+          (imageLinks && imageLinks.thumbnail) ||
+          "https://www.gaithersburgdental.com/wp-content/uploads/2016/10/orionthemes-placeholder-image.png";
+        obj["price"] = price;
+        return books.push(obj);
+      });
     });
+    console.log(books);
+    return resolve(books);
   });
-  return books;
 };
 export const getWatches = async () => {
   var watches = new Array();
