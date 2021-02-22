@@ -16,6 +16,7 @@ import {
   getWatches,
 } from "../utils";
 import NoItemsFound from "./NoItemsFound";
+import ConnectionStatusIcon from "./ConnectionStatusIcon";
 function Home() {
   const [state, setState] = useState([]);
   const [displayedItems, setDisplayedItems] = useState([]);
@@ -90,11 +91,12 @@ function Home() {
             </div>
             {displayedItems.length === 0 && <NoItemsFound />}
           </div>
-          <Footer />
+          <Footer status={displayedItems.length === 0 ? true : false} />
         </>
       ) : (
         <OfflineConfirmation />
       )}
+      <ConnectionStatusIcon status={navigator.onLine} />
     </>
   );
 }
