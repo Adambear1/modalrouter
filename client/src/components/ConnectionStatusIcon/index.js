@@ -7,9 +7,9 @@ function ConnectionStatusIcon({ status }) {
       title={status ? "Connection detected!" : "No Connection Detected!"}
     >
       {status ? (
-        <Wifi color={"green"} size={40} />
+        <Wifi className="ripple" color={"green"} size={40} />
       ) : (
-        <WifiOff color={"red"} size={40} />
+        <WifiOff className="ripple" color={"red"} size={40} />
       )}
     </div>
   );

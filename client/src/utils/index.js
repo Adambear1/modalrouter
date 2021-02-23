@@ -58,7 +58,6 @@ export const getBooks = async () => {
         return books.push(obj);
       });
     });
-    console.log(books);
     return resolve(books);
   });
 };
@@ -68,6 +67,20 @@ export const getWatches = async () => {
     watches.push(item);
   });
   return watches;
+};
+export const sortCollectionUp = (data) => {
+  return data.sort((a, b) => {
+    var first_obj = a.title || a.brand;
+    var second_obj = b.title || b.brand;
+    return first_obj.localeCompare(second_obj);
+  });
+};
+export const sortCollectionDown = (data) => {
+  return data.sort((a, b) => {
+    var first_obj = a.title || a.brand;
+    var second_obj = b.title || b.brand;
+    return second_obj.localeCompare(first_obj);
+  });
 };
 export const updateLocalStorage = (data) => {
   try {

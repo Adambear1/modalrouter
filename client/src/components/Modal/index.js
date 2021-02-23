@@ -50,7 +50,7 @@ function Modal({ open, setOpen }) {
                   );
                 })}
             </table>
-            <Buttons />
+            <Buttons collection={collection} />
           </div>
         </div>
       )}

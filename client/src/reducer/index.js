@@ -1,7 +1,7 @@
 import api from "../api";
 import LocalStorage from "../api/LocalStorage";
 import { WatchBox, Bookshelf } from "../classes";
-import { clearLocalStorage, filterState } from "../utils";
+import { clearLocalStorage, filterState, updateLocalStorage } from "../utils";
 const data = {
   collection: [],
   displayedItems: [],
@@ -12,7 +12,7 @@ function reducer(state = data, { type = null, payload }) {
   switch (type) {
     case "SET_COLLECTED_ITEMS":
       if (payload === null) {
-        return;
+        return { ...state };
       } else {
         return {
           ...state,
@@ -24,25 +24,17 @@ function reducer(state = data, { type = null, payload }) {
     }
     case "ADD_ITEM":
       if (payload.type === "Book") {
-        console.log([...state.collection]);
-        console.log(new Bookshelf(payload).addToCollection());
+        var item = new Bookshelf(payload).addToCollection();
         return {
           ...state,
-          collection: [
-            ...state.collection,
-            new Bookshelf(payload).addToCollection(),
-          ],
+          collection: [...state.collection, item],
         };
       }
       if (payload.type === "Watch") {
+        var item = new WatchBox(payload).addToCollection();
         return {
           ...state,
-          collection: [
-            ...state.collection,
-
-            new WatchBox(payload).addToCollection(),
-            ,
-          ],
+          collection: [...state.collection, item],
         };
       }
     case "REMOVE_ITEM":
@@ -50,12 +42,13 @@ function reducer(state = data, { type = null, payload }) {
       state.collection.map(async (item, index) => {
         var name = item.type === "Book" ? item.title : item.brand;
         if (name === payload) {
-          return;
+          return { ...state };
         } else {
           await collection.push(state.collection[index]);
         }
       });
       api.LocalStorage.update(collection);
+      updateLocalStorage(collection);
       return {
         ...state,
         collection: [...collection],
@@ -93,11 +86,8 @@ function reducer(state = data, { type = null, payload }) {
         });
         return { ...state, displayedItems: filterState(newDisplayedItems) };
       }
-    case "CLEAR_ALL":
-      clearLocalStorage();
-      LocalStorage.clear().then(({ data }) => {
-        return { ...state, collection: data };
-      });
+    case "ACTION_BUTTONS":
+      return { ...state, collection: payload };
   }
 }
 

@@ -60,7 +60,7 @@ function Home() {
   }, [state]);
   return (
     <>
-      {store && store.online === true ? (
+      {store && store.online ? (
         <>
           <Jumbotron open={open} setOpen={setOpen} />
           <Modal open={open} setOpen={setOpen} />
