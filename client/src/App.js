@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import reducer from "./reducer";
 import { createStore } from "redux";

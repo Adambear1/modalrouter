@@ -1,10 +1,15 @@
 import React from "react";
-
+// styles
+import "./styles.css";
 function Loading() {
   return (
-    <div class="text-center position-absolute" style={{ top: "50%" }}>
-      <div class="spinner-border" role="status">
-        <span class="sr-only">Loading...</span>
+    <div className="text-center loader">
+      <div
+        className="spinner-border text-primary"
+        style={{ width: "5rem", height: "5rem" }}
+        role="status"
+      >
+        <span className="sr-only">Loading...</span>
       </div>
     </div>
   );

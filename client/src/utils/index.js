@@ -30,14 +30,17 @@ export const checkOnlineStatus = (dispatch) => {
   });
 };
 export const filterDisplayedItems = (displayedItems) => {
-  return displayedItems.filter(
-    (v, i, a) =>
-      a.findIndex((t) => JSON.stringify(t) === JSON.stringify(v)) === i
-  );
+  // return displayedItems.filter(
+  //   (v, i, a) =>
+  //     a.findIndex((t) => JSON.stringify(t) === JSON.stringify(v)) === i
+  // );
+  return displayedItems.filter(function (item, pos) {
+    return displayedItems.indexOf(item) === pos;
+  });
 };
+
 export const getBooks = async () => {
   var books = new Array();
-
   return new Promise(function (resolve, reject) {
     api.BooksDB.GetAll().then(({ data }) => {
       data.items.map(({ volumeInfo, saleInfo }) => {
@@ -87,4 +90,8 @@ export const updateLocalStorage = (data) => {
   } catch ({ message }) {
     console.log(message);
   }
+};
+
+export const clearLocalStorage = () => {
+  return window.localStorage.clear();
 };

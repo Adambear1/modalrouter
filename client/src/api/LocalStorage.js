@@ -16,4 +16,7 @@ export default {
       body: data,
     });
   },
+  clear: async () => {
+    return axios.post(route + "/clear");
+  },
 };

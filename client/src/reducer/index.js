@@ -1,7 +1,7 @@
 import api from "../api";
 import LocalStorage from "../api/LocalStorage";
 import { WatchBox, Bookshelf } from "../classes";
-import { filterState } from "../utils";
+import { clearLocalStorage, filterState } from "../utils";
 const data = {
   collection: [],
   displayedItems: [],
@@ -24,6 +24,8 @@ function reducer(state = data, { type = null, payload }) {
     }
     case "ADD_ITEM":
       if (payload.type === "Book") {
+        console.log([...state.collection]);
+        console.log(new Bookshelf(payload).addToCollection());
         return {
           ...state,
           collection: [
@@ -91,6 +93,11 @@ function reducer(state = data, { type = null, payload }) {
         });
         return { ...state, displayedItems: filterState(newDisplayedItems) };
       }
+    case "CLEAR_ALL":
+      clearLocalStorage();
+      LocalStorage.clear().then(({ data }) => {
+        return { ...state, collection: data };
+      });
   }
 }
 

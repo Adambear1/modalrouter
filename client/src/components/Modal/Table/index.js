@@ -4,8 +4,6 @@ import "./styles.css";
 // Dependencies
 import { Star, Trash } from "react-bootstrap-icons";
 import { useDispatch, useSelector } from "react-redux";
-import Card from "../Card";
-import api from "../../../api";
 
 function Table({ index, name, type, favorite, extra_1, extra_2 }) {
   const [open, setOpen] = useState(false);
@@ -43,7 +41,6 @@ function Table({ index, name, type, favorite, extra_1, extra_2 }) {
           </td>
         </tr>
       </tbody>
-      {/* <Card name={name} index={index} type={type} favorite={favorite} extra_1={extra_1} extra_2={extra_2} open={open} setOpen={setOpen}/> */}
     </>
   );
 }

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 // styles
 import "./styles.css";
+import { Trash } from "react-bootstrap-icons";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 // Components
 import Table from "./Table";
+import Buttons from "./Buttons";
 
 function Modal({ open, setOpen }) {
   const [collection, setCollection] = useState(null);
@@ -40,7 +42,7 @@ function Modal({ open, setOpen }) {
                 collection.map((item, index) => {
                   return (
                     <Table
-                      index={index}
+                      key={index}
                       type={item.type}
                       name={item.type === "Book" ? item.title : item.brand}
                       favorite={item["isFavorite"] ? true : false}
@@ -48,6 +50,7 @@ function Modal({ open, setOpen }) {
                   );
                 })}
             </table>
+            <Buttons />
           </div>
         </div>
       )}

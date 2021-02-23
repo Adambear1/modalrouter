@@ -8,16 +8,17 @@ function Selector({ state, setState }) {
   const message = "This Feature Requires Internet for Access";
   return (
     <>
-      {values.map((item, id) => (
+      {values.map((item, index) => (
         <>
           {item === "Books" && !navigator.onLine ? (
             <OfflineButton
+              key={index}
               message={message}
               popover={popover}
               setPopover={setPopover}
             >
               <Buttons
-                key={id}
+                key={index}
                 value={item}
                 state={state}
                 setState={setState}
@@ -30,7 +31,7 @@ function Selector({ state, setState }) {
             <Buttons
               popover={popover}
               setPopover={setPopover}
-              key={id}
+              key={index}
               value={item}
               state={state}
               setState={setState}

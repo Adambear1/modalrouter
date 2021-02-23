@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 function OfflineConfirmation() {
   const dispatch = useDispatch();
   return (
-    <div class="container">
+    <div className="container">
       <p className="m-5 mx-auto">
         Uh oh! Looks like we currently do not have a stable internet
         connection...

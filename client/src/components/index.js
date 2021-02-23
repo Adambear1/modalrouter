@@ -20,6 +20,8 @@ import ConnectionStatusIcon from "./ConnectionStatusIcon";
 import Loading from "./Loading";
 function Home() {
   const [state, setState] = useState([]);
+  const [books, setBooks] = useState([]);
+  const [watches, setWatches] = useState([]);
   const [displayedItems, setDisplayedItems] = useState([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -27,6 +29,10 @@ function Home() {
   const store = useSelector((store) => store);
   // ESLINT-IGNORE-NEXT-LINE
   useMemo(() => {
+    getBooks().then((data) => setBooks(data));
+    getWatches().then((data) => {
+      setWatches(data);
+    });
     checkOnlineStatus(dispatch);
     LocalStorage.get().then(async ({ data }) => {
       var payload = data.length === 0 ? null : data;
@@ -35,50 +41,23 @@ function Home() {
     return dispatch({ type: "ONLINE_STATUS", payload: navigator.onLine });
   }, [navigator.onLine]);
   useEffect(async () => {
-    setDisplayedItems([]);
-    if (state) {
-      state.map(async (item) => {
-        if (item.length > 0) {
-          if (item === "Watches") {
-            getWatches().then((data) => {
-              setLoading(true);
-              setTimeout(() => {
-                setLoading(false);
-                setDisplayedItems(
-                  filterDisplayedItems([...displayedItems, ...data])
-                );
-                console.log(displayedItems);
-              }, 400);
-            });
-          }
-          if (item === "Books") {
-            getBooks().then((data) => {
-              setLoading(true);
-              setTimeout(() => {
-                setLoading(false);
-                setDisplayedItems(
-                  filterDisplayedItems([...displayedItems, ...data])
-                );
-                console.log(displayedItems);
-              }, 500);
-            });
-          }
-        } else {
-          setLoading(false);
+    try {
+      switch (JSON.stringify(state)) {
+        case '["Books"]':
+          return setDisplayedItems([...books]);
+        case '["Watches"]':
+          return setDisplayedItems([...watches]);
+        case '["Books","Watches"]':
+          return setDisplayedItems([...books, ...watches]);
+        case '["Watches","Books"]':
+          return setDisplayedItems([...watches, ...books]);
+        default:
           return setDisplayedItems([]);
-        }
-      });
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-        return dispatch({
-          type: "SET_DISPLAYED_ITEMS",
-          payload: displayedItems,
-        });
-      }, 2000);
+      }
+    } catch ({ message }) {
+      console.error(message);
     }
   }, [state]);
-
   return (
     <>
       {store && store.online === true ? (
@@ -86,11 +65,11 @@ function Home() {
           <Jumbotron open={open} setOpen={setOpen} />
           <Modal open={open} setOpen={setOpen} />
           <div className="container">
-            <div className="row">
-              <Selector state={state} setState={setState} />
-              {loading ? (
-                <Loading />
-              ) : (
+            {loading ? (
+              <Loading />
+            ) : (
+              <div className="row">
+                <Selector state={state} setState={setState} />
                 <div className={displayedItems.length > 0 && "masonry"}>
                   {displayedItems.length > 0 &&
                     displayedItems.map((item) => (
@@ -111,10 +90,11 @@ function Home() {
                       />
                     ))}
                 </div>
-              )}
-            </div>
-            {displayedItems.length === 0 && <NoItemsFound />}
+              </div>
+            )}
+            {displayedItems.length === 0 && !loading && <NoItemsFound />}
           </div>
+
           <Footer status={displayedItems.length === 0 ? true : false} />
         </>
       ) : (

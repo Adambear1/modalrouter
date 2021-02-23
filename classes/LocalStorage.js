@@ -13,6 +13,15 @@ class LocalStorage {
   getAll() {
     return this.items;
   }
+  clearAll() {
+    this.items = [];
+    writeFile("localStorage.json", JSON.stringify(this.items), (error) => {
+      if (error) {
+        console.error(error);
+      }
+    });
+    return this.items;
+  }
   updateStorage(data) {
     writeFile("localStorage.json", JSON.stringify(data), (error) => {
       if (error) {
